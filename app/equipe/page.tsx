@@ -1,6 +1,7 @@
 import { sanityFetch } from '@/lib/sanity/fetch'
 import { streamersQuery } from '@/lib/sanity/queries'
 import type { Streamer } from '@/types/sanity'
+import SanityImage from '@/components/SanityImage'
 
 export const metadata = {
   title: 'Notre Équipe - Yokomen Team',
@@ -30,9 +31,19 @@ export default async function EquipePage() {
               className="bg-dark-lighter rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all group"
             >
               <div className="p-6">
-                <div className="w-24 h-24 bg-dark rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
-                  🎮
-                </div>
+                {streamer.avatar ? (
+                  <SanityImage 
+                    image={streamer.avatar} 
+                    alt={streamer.pseudo}
+                    width={96}
+                    height={96}
+                    className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
+                  />
+                ) : (
+                  <div className="w-24 h-24 bg-dark rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
+                    🎮
+                  </div>
+                )}
                 
                 <h3 className="text-xl font-bold text-center mb-2 group-hover:text-primary transition-colors">
                   {streamer.pseudo}

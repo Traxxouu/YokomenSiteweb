@@ -18,16 +18,16 @@ export default function WhatWeOffer() {
   ]
 
   return (
-    <section className="py-20 px-6">
+    <section className="py-12 sm:py-16 md:py-20 px-4 sm:px-6">
       <div className="max-w-7xl mx-auto">
-        <h2 className="text-4xl font-bold mb-4 text-center">Ce qu&apos;on propose</h2>
+        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-3 sm:mb-4 text-center">Ce qu&apos;on propose</h2>
         
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mt-8 sm:mt-10 md:mt-12">
           {features.map((feature, index) => (
-            <div key={index} className="text-center">
-              <div className="text-6xl mb-4">{feature.icon}</div>
-              <h3 className="text-2xl font-bold mb-3 text-secondary">{feature.title}</h3>
-              <p className="text-gray-400">{feature.description}</p>
+            <div key={index} className="text-center p-4 sm:p-6 bg-neutral-900 rounded-lg border border-white/10 hover:border-white/20 transition-all">
+              <div className="text-4xl sm:text-5xl md:text-6xl mb-3 sm:mb-4">{feature.icon}</div>
+              <h3 className="text-xl sm:text-2xl font-bold mb-2 sm:mb-3 text-white">{feature.title}</h3>
+              <p className="text-sm sm:text-base text-gray-400">{feature.description}</p>
             </div>
           ))}
         </div>

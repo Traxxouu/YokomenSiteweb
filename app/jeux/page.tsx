@@ -2,6 +2,7 @@ import { sanityFetch } from '@/lib/sanity/fetch'
 import { gamesQuery } from '@/lib/sanity/queries'
 import type { Game } from '@/types/sanity'
 import Link from 'next/link'
+import SanityImage from '@/components/SanityImage'
 
 export const metadata = {
   title: 'Nos Jeux - Yokomen Team',
@@ -31,6 +32,18 @@ export default async function JeuxPage() {
               href={`/jeux/${game.slug.current}`}
               className="bg-dark-lighter rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all group"
             >
+              {game.mainImage && (
+                <div className="relative h-48 w-full overflow-hidden">
+                  <SanityImage 
+                    image={game.mainImage} 
+                    alt={game.name}
+                    width={600}
+                    height={400}
+                    className="object-cover w-full h-full group-hover:scale-110 transition-transform duration-300"
+                  />
+                </div>
+              )}
+              
               <div className="p-8">
                 <h2 className="text-2xl font-bold mb-3 group-hover:text-primary transition-colors">
                   {game.name}
