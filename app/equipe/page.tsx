@@ -1,34 +1,69 @@
+'use client'
+
+import { useState, useEffect } from 'react'
 import { sanityFetch } from '@/lib/sanity/fetch'
 import { streamersQuery } from '@/lib/sanity/queries'
 import type { Streamer } from '@/types/sanity'
 import SanityImage from '@/components/SanityImage'
+import { motion } from 'framer-motion'
+import { Twitch, Youtube, Twitter } from 'lucide-react'
 
-export const metadata = {
-  title: 'Notre Équipe - Yokomen Team',
-  description: 'Découvrez les streamers de Yokomen Team',
-}
+export default function EquipePage() {
+  const [streamers, setStreamers] = useState<Streamer[]>([])
 
-export default async function EquipePage() {
-  const streamers = await sanityFetch<Streamer[]>({
-    query: streamersQuery,
-    tags: ['streamer'],
-  })
+  useEffect(() => {
+    sanityFetch<Streamer[]>({
+      query: streamersQuery,
+      tags: ['streamer'],
+    }).then(setStreamers)
+  }, [])
 
   return (
     <main className="min-h-screen pt-32 pb-20 px-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-5xl font-bold mb-6 text-center">Notre Équipe</h1>
-        <p className="text-xl text-gray-400 text-center mb-16 max-w-3xl mx-auto">
+        <motion.h1 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-5xl font-bold mb-6 text-center"
+        >
+          Notre Équipe
+        </motion.h1>
+        
+        <motion.p 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+          className="text-xl text-gray-400 text-center mb-4 max-w-3xl mx-auto"
+        >
           Nos streamers sont avant tout des passionnés qui se lancent dans l&apos;aventure du stream. 
           Pas de gros ego ici, juste des gens accessibles qui aiment partager leur passion du gaming 
           avec leur communauté.
-        </p>
+        </motion.p>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-          {streamers.map((streamer) => (
-            <div
+        <motion.p 
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+          className="text-lg text-gray-400 text-center mb-16 max-w-3xl mx-auto"
+        >
+          Tu veux te lancer dans le stream ? Rejoins-nous, on s&apos;entraide et on se met en avant mutuellement. L&apos;union fait la force !
+        </motion.p>
+
+        <motion.div 
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8"
+        >
+          {streamers.map((streamer, index) => (
+            <motion.div
               key={streamer._id}
-              className="bg-dark-lighter rounded-lg overflow-hidden hover:ring-2 hover:ring-primary transition-all group"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.1 * index }}
+              whileHover={{ scale: 1.05 }}
+              className="bg-neutral-900 rounded-lg overflow-hidden hover:ring-2 hover:ring-white/20 transition-all group"
             >
               <div className="p-6">
                 {streamer.avatar ? (
@@ -40,12 +75,12 @@ export default async function EquipePage() {
                     className="w-24 h-24 rounded-full mx-auto mb-4 object-cover"
                   />
                 ) : (
-                  <div className="w-24 h-24 bg-dark rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
+                  <div className="w-24 h-24 bg-neutral-800 rounded-full mx-auto mb-4 flex items-center justify-center text-4xl">
                     🎮
                   </div>
                 )}
                 
-                <h3 className="text-xl font-bold text-center mb-2 group-hover:text-primary transition-colors">
+                <h3 className="text-xl font-bold text-center mb-2 group-hover:text-gray-300 transition-colors">
                   {streamer.pseudo}
                 </h3>
 
@@ -60,7 +95,7 @@ export default async function EquipePage() {
                     {streamer.mainGames.slice(0, 3).map((game) => (
                       <span
                         key={game.slug.current}
-                        className="text-xs px-2 py-1 bg-primary/20 text-primary rounded"
+                        className="text-xs px-2 py-1 bg-white/10 text-white/80 rounded"
                       >
                         {game.name}
                       </span>
@@ -77,7 +112,7 @@ export default async function EquipePage() {
                       className="text-gray-400 hover:text-purple-500 transition-colors"
                       title="Twitch"
                     >
-                      <span className="text-2xl">🎥</span>
+                      <Twitch className="w-6 h-6" />
                     </a>
                   )}
                   {streamer.youtubeUrl && (
@@ -88,7 +123,7 @@ export default async function EquipePage() {
                       className="text-gray-400 hover:text-red-500 transition-colors"
                       title="YouTube"
                     >
-                      <span className="text-2xl">📺</span>
+                      <Youtube className="w-6 h-6" />
                     </a>
                   )}
                   {streamer.twitterUrl && (
@@ -99,7 +134,7 @@ export default async function EquipePage() {
                       className="text-gray-400 hover:text-blue-400 transition-colors"
                       title="Twitter/X"
                     >
-                      <span className="text-2xl">🐦</span>
+                      <Twitter className="w-6 h-6" />
                     </a>
                   )}
                 </div>
@@ -109,13 +144,13 @@ export default async function EquipePage() {
                     <div className="grid grid-cols-2 gap-2 text-center text-sm">
                       {streamer.stats.followers && (
                         <div>
-                          <div className="text-secondary font-bold">{streamer.stats.followers}</div>
+                          <div className="text-white font-bold">{streamer.stats.followers}</div>
                           <div className="text-gray-500 text-xs">Followers</div>
                         </div>
                       )}
                       {streamer.stats.hoursStreamed && (
                         <div>
-                          <div className="text-secondary font-bold">{streamer.stats.hoursStreamed}h</div>
+                          <div className="text-white font-bold">{streamer.stats.hoursStreamed}h</div>
                           <div className="text-gray-500 text-xs">Heures</div>
                         </div>
                       )}
@@ -123,11 +158,16 @@ export default async function EquipePage() {
                   </div>
                 )}
               </div>
-            </div>
+            </motion.div>
           ))}
-        </div>
+        </motion.div>
 
-        <div className="mt-16 text-center bg-dark-lighter rounded-lg p-12">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="mt-16 text-center bg-neutral-900 rounded-lg p-12"
+        >
           <h2 className="text-3xl font-bold mb-4">Tu veux te lancer dans le stream ?</h2>
           <p className="text-gray-400 mb-6 max-w-2xl mx-auto">
             Rejoins-nous, on s&apos;entraide et on se met en avant mutuellement. L&apos;union fait la force !
@@ -136,11 +176,11 @@ export default async function EquipePage() {
             href="https://discord.gg/yokomen"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block px-8 py-3 bg-primary hover:bg-primary-light transition-all rounded-lg text-white font-semibold"
+            className="inline-block px-8 py-3 bg-white hover:bg-gray-200 transition-all rounded-lg text-black font-semibold"
           >
             Rejoindre Discord
           </a>
-        </div>
+        </motion.div>
       </div>
     </main>
   )
